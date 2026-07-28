@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfers | Unity Credit Union</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        /* ==========================
+           RESPONSIVE FIXES
+        =========================== */
+
+        /* Filter tabs - responsive */
+        .filter-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tabs button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: .3s;
+        }
+
+        .filter-tabs button:hover {
+            opacity: 0.8;
+        }
+
+        .filter-tabs button.active {
+            opacity: 1 !important;
+        }
+
+        /* Table responsive */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            min-width: 900px;
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 12px 14px;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+
+        th {
+            background: #0b6b45;
+            color: #fff;
+            text-align: left;
+        }
+
+        td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .action-buttons button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .action-buttons .approve-btn {
+            background: #0b6b45;
+            color: white;
+        }
+
+        .action-buttons .approve-btn:hover {
+            background: #095a3a;
+        }
+
+        .action-buttons .reject-btn {
+            background: #d62828;
+            color: white;
+        }
+
+        .action-buttons .reject-btn:hover {
+            background: #b32020;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status-approved {
+            background: #1b8f4a;
+            color: white;
+        }
+
+        .status-rejected {
+            background: #d62828;
+            color: white;
+        }
+
+        .reject-reason {
+            color: #d62828;
+            font-size: 12px;
+            max-width: 150px;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 500px;
+            max-width: 90%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, .2);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #0b6b45;
+        }
+
+        .modal-content textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .modal-content .decline-btn {
+            background: #d62828;
+            color: white;
+        }
+
+        .modal-content .decline-btn:hover {
+            background: #b32020;
+        }
+
+        .close {
+            float: right;
+            font-size: 30px;
+            cursor: pointer;
+            margin-top: -10px;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .filter-tabs {
+                gap: 8px;
+            }
+
+            .filter-tabs button {
+                padding: 8px 16px;
+                font-size: 12px;
+                flex: 1;
+                min-width: 60px;
+                text-align: center;
+            }
+
+            th,
+            td {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            table {
+                min-width: 700px;
+            }
+
+            .action-buttons button {
+                padding: 4px 10px;
+                font-size: 11px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .modal-content h2 {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .filter-tabs button {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+
+            th,
+            td {
+                padding: 6px 8px;
+                font-size: 11px;
+            }
+
+            table {
+                min-width: 600px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .action-buttons button {
+                font-size: 10px;
+                padding: 4px 8px;
+            }
+
+            .modal-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hamburger menu button (mobile) -->
+<button class="admin-menu-toggle" onclick="toggleAdminSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- Sidebar overlay (mobile) -->
+<div class="sidebar-overlay" onclick="toggleAdminSidebar()"></div>
+
+    <div class="admin-wrapper">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="images/logo.png" alt="Logo">
+                <h2>DCU Admin</h2>
+            </div>
+            <nav>
+                <a href="admin-dashboard.html">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Dashboard
+                </a>
+                <a href="admin-customers.html">
+                    <i class="fa-solid fa-users"></i>
+                    Customers
+                </a>
+                <a href="#">
+                    <i class="fa-solid fa-building-columns"></i>
+                    Accounts
+                </a>
+                <a href="#">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    Transactions
+                </a>
+                <a href="admin-withdrawals.html">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    Withdrawals
+                </a>
+                <a class="active" href="admin-transfers.html">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    Transfers
+                </a>
+                <a href="#">
+                    <i class="fa-solid fa-envelope"></i>
+                    Messages
+                </a>
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+                <a href="login.html">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main -->
+        <main class="main">
+
+            <header class="topbar">
+                <div>
+                    <h1>Transfer Requests</h1>
+                    <p>Manage customer transfer requests</p>
+                </div>
+            </header>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="approve active" id="filterAll" onclick="filterTransfers('all')">All</button>
+                <button class="approve" id="filterPending" onclick="filterTransfers('pending')" style="background:#f59e0b; opacity:0.6;">Pending</button>
+                <button class="approve" id="filterApproved" onclick="filterTransfers('approved')" style="background:#1b8f4a; opacity:0.6;">Approved</button>
+                <button class="approve" id="filterRejected" onclick="filterTransfers('rejected')" style="background:#d62828; opacity:0.6;">Rejected</button>
+            </div>
+
+            <!-- Transfers Table -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h2>All Transfer Requests</h2>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Recipient</th>
+                                <th>Bank</th>
+                                <th>Account</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transferTable">
+                            <tr>
+                                <td colspan="8" style="text-align:center; padding:20px;">Loading transfers...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Reject Modal -->
+    <div id="rejectModal" class="modal">
+        <div class="modal-content">
+            <span id="closeRejectModal" class="close">&times;</span>
+            <h2>Reject Transfer</h2>
+            <form id="rejectForm">
+                <input type="hidden" id="rejectTransferId">
+                <label style="display:block; margin-bottom:8px; font-weight:600;">Reason for Rejection</label>
+                <textarea id="rejectReason" rows="4" placeholder="Enter reason for rejection..."></textarea>
+                <button type="submit" class="decline-btn">
+                    <i class="fa-solid fa-times"></i> Reject Transfer
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin-transfers.js"></script>
+    <script>
+    function toggleAdminSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+
+    // Close sidebar when clicking outside (mobile only)
+    document.addEventListener('click', function(event) {
+        const sidebar = document.querySelector('.sidebar');
+        const toggle = document.querySelector('.admin-menu-toggle');
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (window.innerWidth <= 768) {
+            if (sidebar && toggle && overlay) {
+                if (!sidebar.contains(event.target) && !toggle.contains(event.target) && !overlay.contains(event.target)) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                }
+            }
+        }
+    });
+
+    // Close sidebar when resizing to desktop
+    window.addEventListener('resize', function() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (window.innerWidth > 768) {
+            if (sidebar) {
+                sidebar.classList.remove('open');
+            }
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+        }
+    });
+</script>
+</body>
+</html>

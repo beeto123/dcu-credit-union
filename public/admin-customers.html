@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Customers | Unity Credit Union</title>
+
+<link rel="stylesheet" href="css/admin.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+    <!-- Hamburger menu button (mobile) -->
+<button class="admin-menu-toggle" onclick="toggleAdminSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- Sidebar overlay (mobile) -->
+<div class="sidebar-overlay" onclick="toggleAdminSidebar()"></div>
+
+<div class="admin-wrapper">
+
+<!-- Sidebar -->
+
+<aside class="sidebar">
+
+<div class="logo">
+
+<img src="images/logo.png" alt="Logo">
+
+<h2>DCU Admin</h2>
+
+</div>
+
+<nav>
+
+<a href="admin-dashboard.html">
+<i class="fa-solid fa-chart-line"></i>
+Dashboard
+</a>
+
+<a class="active" href="admin-customers.html">
+<i class="fa-solid fa-users"></i>
+Customers
+</a>
+
+<a href="#">
+<i class="fa-solid fa-building-columns"></i>
+Accounts
+</a>
+
+<a href="admin-transfers.html">
+    <i class="fa-solid fa-money-bill-transfer"></i>
+    Transfers
+</a>
+
+<a href="admin-withdrawals.html">
+<i class="fa-solid fa-money-bill-wave"></i>
+Withdrawals
+</a>
+
+<a href="#">
+<i class="fa-solid fa-envelope"></i>
+Messages
+</a>
+
+<a href="#">
+<i class="fa-solid fa-gear"></i>
+Settings
+</a>
+
+<a href="login.html">
+<i class="fa-solid fa-right-from-bracket"></i>
+Logout
+</a>
+
+</nav>
+
+</aside>
+
+<!-- Main -->
+
+<main class="main">
+
+<header class="topbar">
+
+<div>
+
+<h1>Customer Management</h1>
+
+<p>Manage all Unity Credit Union customers</p>
+
+</div>
+
+<button id="newCustomerBtn" class="approve">
+
+<i class="fa-solid fa-plus"></i>
+
+New Customer
+
+</button>
+
+</header>
+
+<!-- Search -->
+
+<div class="chart-card">
+
+<input
+type="text"
+id="searchCustomer"
+placeholder="Search customer..."
+style="
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:8px;
+font-size:16px;
+">
+
+</div>
+
+<!-- Customer Table -->
+
+<div class="table-card">
+
+<div class="table-header">
+
+<h2>Customers</h2>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Account</th>
+
+<th>Name</th>
+
+<th>Email</th>
+
+<th>Checking</th>
+
+<th>Savings</th>
+
+<th>Role</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="customerTableBody">
+
+<tr>
+
+<td colspan="7">
+
+Loading customers...
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</main>
+
+</div>
+
+<!-- Paste the modal HERE -->
+
+<div id="customerModal" class="modal">
+
+    <div class="modal-content">
+
+        <span id="closeModal" class="close">&times;</span>
+
+        <h2>Create New Customer</h2>
+
+        <form id="customerForm">
+
+            <input type="text" id="full_name" placeholder="Full Name" required>
+
+            <input type="email" id="email" placeholder="Email" required>
+
+            <input type="password" id="password" placeholder="Password" required>
+
+            <input type="number" id="checking_balance" placeholder="Checking Balance" value="0">
+
+            <input type="number" id="savings_balance" placeholder="Savings Balance" value="0">
+
+            <button type="submit" class="approve">
+                Create Customer
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="js/admin-customers.js"></script>
+<script>
+    function toggleAdminSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+
+    // Close sidebar when clicking outside (mobile only)
+    document.addEventListener('click', function(event) {
+        const sidebar = document.querySelector('.sidebar');
+        const toggle = document.querySelector('.admin-menu-toggle');
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (window.innerWidth <= 768) {
+            if (sidebar && toggle && overlay) {
+                if (!sidebar.contains(event.target) && !toggle.contains(event.target) && !overlay.contains(event.target)) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                }
+            }
+        }
+    });
+
+    // Close sidebar when resizing to desktop
+    window.addEventListener('resize', function() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (window.innerWidth > 768) {
+            if (sidebar) {
+                sidebar.classList.remove('open');
+            }
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

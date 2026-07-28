@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Funds | Unity Credit Union</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/customer.css">
+
+    <style>
+        .transfer-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+            margin-top: 25px;
+            max-width: 650px;
+        }
+
+        .transfer-card h2 {
+            margin: 15px 0 25px;
+            color: #004a99;
+        }
+
+        .transfer-card label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .transfer-card input,
+        .transfer-card select,
+        .transfer-card textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .transfer-card input:focus,
+        .transfer-card select:focus,
+        .transfer-card textarea:focus {
+            outline: none;
+            border-color: #0b6b45;
+            box-shadow: 0 0 0 3px rgba(11, 107, 69, 0.15);
+        }
+
+        .transfer-card button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            background: #005bbb;
+            color: white;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: .3s;
+        }
+
+        .transfer-card button:hover {
+            background: #003d80;
+        }
+
+        .notice {
+            margin-top: 30px;
+            background: #fff8e5;
+            padding: 20px;
+            border-left: 5px solid orange;
+            border-radius: 10px;
+            max-width: 650px;
+        }
+
+        .notice h3 {
+            color: #8a6d00;
+            margin-bottom: 10px;
+        }
+
+        .notice p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Menu toggle */
+        .menu-toggle {
+            display: none !important;
+            background: #0b6b45;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 20px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                <img src="images/logo.png" alt="DCU">
+            </div>
+
+            <ul>
+                <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="customer-withdraw.html"><i class="fa-solid fa-money-bill-wave"></i> Withdraw</a></li>
+                <li class="active"><a href="customer-transfer.html"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transfer</a></li>
+                <li><a href="#"><i class="fa-solid fa-credit-card"></i> Cards</a></li>
+                <li><a href="#"><i class="fa-solid fa-building"></i> Loans</a></li>
+                <li><a href="#"><i class="fa-solid fa-chart-line"></i> Investments</a></li>
+                <li><a href="customer-profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+
+        </aside>
+
+        <!-- ================= MAIN ================= -->
+        <main class="main">
+
+            <header>
+
+                <!-- Hamburger menu button (mobile) -->
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search transactions...">
+                </div>
+
+                <div class="header-right">
+
+                    <div class="profile-card">
+                        <div class="avatar" id="avatarInitials">AD</div>
+                        <div>
+                            <h4 id="customerName">Amanda Diaz</h4>
+                            <small id="lastLogin">Last login: Just now</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+            <h1>Transfer Funds</h1>
+            <p style="color: #666;">Send money to another bank account</p>
+
+            <div class="transfer-card">
+                <h3>Available Balance</h3>
+                <h2 id="availableBalance" style="color: #0b6b45;">$0.00</h2>
+
+                <form id="transferForm">
+
+                    <label>Amount</label>
+                    <input type="number" id="amount" placeholder="Enter amount" min="0.01" step="0.01" required>
+
+                    <label>Account Type</label>
+                    <select id="accountType">
+                        <option value="checking">Checking</option>
+                        <option value="savings">Savings</option>
+                    </select>
+
+                    <hr style="margin: 25px 0; border: none; border-top: 2px dashed #eee;">
+
+                    <h3 style="color: #0b6b45; margin-bottom: 15px;">Recipient Details</h3>
+
+                    <label>Recipient Full Name</label>
+                    <input type="text" id="recipientName" placeholder="John Doe" required>
+
+                    <label>Recipient Bank Name</label>
+                    <input type="text" id="recipientBank" placeholder="Chase Bank" required>
+
+                    <div class="form-row">
+                        <div>
+                            <label>Recipient Account Number</label>
+                            <input type="text" id="recipientAccount" placeholder="123456789" required>
+                        </div>
+                        <div>
+                            <label>Recipient Routing Number</label>
+                            <input type="text" id="recipientRouting" placeholder="021000021">
+                        </div>
+                    </div>
+
+                    <label>Description (Optional)</label>
+                    <textarea id="description" rows="3" placeholder="Reason for transfer"></textarea>
+
+                    <button type="submit">Request Transfer</button>
+                </form>
+            </div>
+
+            <div class="notice">
+                <h3>Important</h3>
+                <p>Every transfer request requires administrator approval before funds are sent.</p>
+                <p style="margin-top: 10px; font-size: 14px; color: #999;">
+                    Please double-check all recipient details before submitting.
+                </p>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/customer-transfer.js"></script>
+
+    <script>
+        // ========================================
+        // MOBILE SIDEBAR TOGGLE
+        // ========================================
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const toggle = document.querySelector('.menu-toggle');
+            if (window.innerWidth <= 768) {
+                if (sidebar && toggle) {
+                    if (!sidebar.contains(event.target) && !toggle.contains(event.target)) {
+                        sidebar.classList.remove('open');
+                    }
+                }
+            }
+        });
+
+        window.addEventListener('resize', function() {
+            const sidebar = document.querySelector('.sidebar');
+            if (window.innerWidth > 768) {
+                if (sidebar) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

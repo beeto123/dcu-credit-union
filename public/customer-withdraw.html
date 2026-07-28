@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw Funds | Unity Credit Union</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/customer.css">
+
+    <style>
+        .withdraw-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+            margin-top: 25px;
+            max-width: 650px;
+        }
+
+        .withdraw-card h2 {
+            margin: 15px 0 25px;
+            color: #004a99;
+        }
+
+        .withdraw-card label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .withdraw-card input,
+        .withdraw-card select,
+        .withdraw-card textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .withdraw-card input:focus,
+        .withdraw-card select:focus,
+        .withdraw-card textarea:focus {
+            outline: none;
+            border-color: #0b6b45;
+            box-shadow: 0 0 0 3px rgba(11, 107, 69, 0.15);
+        }
+
+        .withdraw-card button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            background: #d62828;
+            color: white;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: .3s;
+        }
+
+        .withdraw-card button:hover {
+            background: #b32020;
+        }
+
+        .notice {
+            margin-top: 30px;
+            background: #fff8e5;
+            padding: 20px;
+            border-left: 5px solid orange;
+            border-radius: 10px;
+            max-width: 650px;
+        }
+
+        .notice h3 {
+            color: #8a6d00;
+            margin-bottom: 10px;
+        }
+
+        .notice p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .withdraw-message {
+            margin-top: 15px;
+        }
+
+        .menu-toggle {
+            display: none !important;
+            background: #0b6b45;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 20px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                <img src="images/logo.png" alt="DCU">
+            </div>
+
+            <ul>
+                <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li class="active"><a href="customer-withdraw.html"><i class="fa-solid fa-money-bill-wave"></i> Withdraw</a></li>
+                <li><a href="customer-transfer.html"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transfer</a></li>
+                <li><a href="#"><i class="fa-solid fa-credit-card"></i> Cards</a></li>
+                <li><a href="#"><i class="fa-solid fa-building"></i> Loans</a></li>
+                <li><a href="#"><i class="fa-solid fa-chart-line"></i> Investments</a></li>
+                <li><a href="customer-profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+
+        </aside>
+
+        <!-- ================= MAIN ================= -->
+        <main class="main">
+
+            <header>
+
+                <!-- Hamburger menu button (mobile) -->
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search transactions...">
+                </div>
+
+                <div class="header-right">
+
+                    <div class="profile-card">
+                        <div class="avatar" id="avatarInitials">AD</div>
+                        <div>
+                            <h4 id="customerName">Amanda Diaz</h4>
+                            <small id="lastLogin">Last login: Just now</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+            <h1>Request Withdrawal</h1>
+            <p style="color: #666;">Request to withdraw funds from your account</p>
+
+            <div class="withdraw-card">
+                <h3>Available Balance</h3>
+                <h2 id="availableBalance" style="color: #0b6b45;">$0.00</h2>
+
+                <form id="withdrawForm">
+                    <label>Amount</label>
+                    <input type="number" id="amount" placeholder="Enter amount" min="0.01" step="0.01" required>
+
+                    <label>Account Type</label>
+                    <select id="accountType">
+                        <option value="checking">Checking</option>
+                        <option value="savings">Savings</option>
+                    </select>
+
+                    <label>Description</label>
+                    <textarea id="description" rows="4" placeholder="Optional"></textarea>
+
+                    <button type="submit">Request Withdrawal</button>
+                </form>
+            </div>
+
+            <div class="notice">
+                <h3>Important</h3>
+                <p>Every withdrawal request requires administrator approval before funds are released.</p>
+                <p style="margin-top: 10px; font-size: 14px; color: #999;">
+                    Please ensure you have sufficient balance before requesting.
+                </p>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/customer-withdraw.js"></script>
+
+    <script>
+        // ========================================
+        // MOBILE SIDEBAR TOGGLE
+        // ========================================
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const toggle = document.querySelector('.menu-toggle');
+            if (window.innerWidth <= 768) {
+                if (sidebar && toggle) {
+                    if (!sidebar.contains(event.target) && !toggle.contains(event.target)) {
+                        sidebar.classList.remove('open');
+                    }
+                }
+            }
+        });
+
+        window.addEventListener('resize', function() {
+            const sidebar = document.querySelector('.sidebar');
+            if (window.innerWidth > 768) {
+                if (sidebar) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

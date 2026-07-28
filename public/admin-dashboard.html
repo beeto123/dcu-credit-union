@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity Credit Union | Admin Dashboard</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Hamburger menu button (mobile) -->
+<button class="admin-menu-toggle" onclick="toggleAdminSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- Sidebar overlay (mobile) -->
+<div class="sidebar-overlay" onclick="toggleAdminSidebar()"></div>
+
+<div class="admin-wrapper">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <img src="images/logo.png" alt="Logo">
+
+            <h2>DCU Admin</h2>
+
+        </div>
+
+        <nav>
+
+            <a class="active" href="admin-dashboard.html">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="admin-customers.html">
+                <i class="fa-solid fa-users"></i>
+                Customers
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-building-columns"></i>
+                Accounts
+            </a>
+
+            <a href="admin-transfers.html">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                Transfers
+            </a>
+
+            <a href="admin-withdrawals.html">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                Withdrawals
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-envelope"></i>
+                Messages
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+            </a>
+
+            <a href="login.html">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>Administrator Dashboard</h1>
+
+                <p>Unity Credit Union Management Portal</p>
+
+            </div>
+
+            <div class="profile">
+
+                <img src="images/default-avatar.png">
+
+            </div>
+
+        </header>
+
+        <!-- CARDS -->
+
+        <section class="cards">
+
+            <div class="card">
+
+                <i class="fa-solid fa-users"></i>
+
+                <h4>Total Customers</h4>
+
+                <h2 id="totalCustomers">0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fa-solid fa-wallet"></i>
+
+                <h4>Total Deposits</h4>
+
+                <h2 id="totalDeposits">£0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fa-solid fa-money-bill-wave"></i>
+
+                <h4>Pending Withdrawals</h4>
+
+                <h2 id="pendingWithdrawals">0</h2>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+
+                <h4>Transactions</h4>
+
+                <h2 id="todayTransactions">0</h2>
+
+            </div>
+
+        </section>
+
+        <!-- CHART -->
+
+        <section class="chart-area">
+
+            <div class="chart-card">
+
+                <h2>Monthly Transactions</h2>
+
+                <canvas id="adminChart"></canvas>
+
+            </div>
+
+        </section>
+
+        <!-- RECENT WITHDRAWALS -->
+
+        <section class="table-card">
+
+            <div class="table-header">
+
+                <h2>Recent Withdrawal Requests</h2>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Customer</th>
+
+                        <th>Account</th>
+
+                        <th>Amount</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="withdrawTable">
+
+                    <tr>
+
+                        <td colspan="5">
+
+                            No withdrawal requests yet.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+    function toggleAdminSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+
+    // Close sidebar when clicking outside (mobile only)
+    document.addEventListener('click', function(event) {
+        const sidebar = document.querySelector('.sidebar');
+        const toggle = document.querySelector('.admin-menu-toggle');
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (window.innerWidth <= 768) {
+            if (sidebar && toggle && overlay) {
+                if (!sidebar.contains(event.target) && !toggle.contains(event.target) && !overlay.contains(event.target)) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                }
+            }
+        }
+    });
+
+    // Close sidebar when resizing to desktop
+    window.addEventListener('resize', function() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (window.innerWidth > 768) {
+            if (sidebar) {
+                sidebar.classList.remove('open');
+            }
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+        }
+    });
+</script>
+
+</body>
+
+</html>

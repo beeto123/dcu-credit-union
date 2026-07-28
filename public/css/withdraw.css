@@ -1,0 +1,97 @@
+.withdraw-card{
+
+background:white;
+
+padding:30px;
+
+border-radius:15px;
+
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+margin-top:25px;
+
+max-width:650px;
+
+}
+
+.withdraw-card h2{
+
+margin:15px 0 25px;
+
+color:#004a99;
+
+}
+
+.withdraw-card label{
+
+display:block;
+
+margin-top:18px;
+
+margin-bottom:8px;
+
+font-weight:bold;
+
+}
+
+.withdraw-card input,
+
+.withdraw-card select,
+
+.withdraw-card textarea{
+
+width:100%;
+
+padding:14px;
+
+border:1px solid #ddd;
+
+border-radius:10px;
+
+font-size:16px;
+
+}
+
+.withdraw-card button{
+
+margin-top:25px;
+
+width:100%;
+
+padding:16px;
+
+border:none;
+
+background:#005bbb;
+
+color:white;
+
+font-size:18px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+}
+
+.withdraw-card button:hover{
+
+background:#003d80;
+
+}
+
+.notice{
+
+margin-top:30px;
+
+background:#fff8e5;
+
+padding:20px;
+
+border-left:5px solid orange;
+
+border-radius:10px;
+
+max-width:650px;
+
+}

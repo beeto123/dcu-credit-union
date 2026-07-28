@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawals | Unity Credit Union</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+    <!-- Hamburger menu button (mobile) -->
+<button class="admin-menu-toggle" onclick="toggleAdminSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- Sidebar overlay (mobile) -->
+<div class="sidebar-overlay" onclick="toggleAdminSidebar()"></div>
+
+    <div class="admin-wrapper">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="images/logo.png" alt="Logo">
+                <h2>DCU Admin</h2>
+            </div>
+            <nav>
+                <a href="admin-dashboard.html">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Dashboard
+                </a>
+                <a href="admin-customers.html">
+                    <i class="fa-solid fa-users"></i>
+                    Customers
+                </a>
+                <a href="#">
+                    <i class="fa-solid fa-building-columns"></i>
+                    Accounts
+                </a>
+                <a href="admin-transfers.html">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    Transfers
+                </a>
+                <a class="active" href="admin-withdrawals.html">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    Withdrawals
+                </a>
+                <a href="#">
+                    <i class="fa-solid fa-envelope"></i>
+                    Messages
+                </a>
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+                <a href="login.html">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main -->
+        <main class="main">
+
+            <header class="topbar">
+                <div>
+                    <h1>Withdrawal Requests</h1>
+                    <p>Manage customer withdrawal requests</p>
+                </div>
+            </header>
+
+            <!-- Filter Tabs -->
+            <div style="display:flex; gap:15px; margin-bottom:25px; flex-wrap:wrap;">
+                <button onclick="filterWithdrawals('all')" class="approve" style="padding:10px 25px; opacity:1;" id="filterAll">All</button>
+                <button onclick="filterWithdrawals('pending')" class="approve" style="padding:10px 25px; background:#f59e0b; opacity:0.6;" id="filterPending">Pending</button>
+                <button onclick="filterWithdrawals('approved')" class="approve" style="padding:10px 25px; background:#1b8f4a; opacity:0.6;" id="filterApproved">Approved</button>
+                <button onclick="filterWithdrawals('rejected')" class="approve" style="padding:10px 25px; background:#d62828; opacity:0.6;" id="filterRejected">Rejected</button>
+            </div>
+
+            <!-- Withdrawals Table -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h2>All Withdrawals</h2>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Account</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="withdrawalTable">
+                        <tr>
+                            <td colspan="6">Loading withdrawals...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Reject Modal -->
+    <div id="rejectModal" class="modal">
+        <div class="modal-content">
+            <span id="closeRejectModal" class="close">&times;</span>
+            <h2>Reject Withdrawal</h2>
+            <form id="rejectForm">
+                <input type="hidden" id="rejectWithdrawalId">
+                <label style="display:block; margin-bottom:8px; font-weight:600;">Reason for Rejection</label>
+                <textarea id="rejectReason" rows="4" placeholder="Enter reason for rejection..." style="width:100%; padding:14px; border:1px solid #ddd; border-radius:8px; font-size:15px; resize:vertical;"></textarea>
+                <button type="submit" class="decline" style="margin-top:10px; width:100%; padding:14px;">
+                    <i class="fa-solid fa-times"></i> Reject Withdrawal
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin-withdrawals.js"></script>
+    <script>
+    function toggleAdminSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+
+    // Close sidebar when clicking outside (mobile only)
+    document.addEventListener('click', function(event) {
+        const sidebar = document.querySelector('.sidebar');
+        const toggle = document.querySelector('.admin-menu-toggle');
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (window.innerWidth <= 768) {
+            if (sidebar && toggle && overlay) {
+                if (!sidebar.contains(event.target) && !toggle.contains(event.target) && !overlay.contains(event.target)) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                }
+            }
+        }
+    });
+
+    // Close sidebar when resizing to desktop
+    window.addEventListener('resize', function() {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+        if (window.innerWidth > 768) {
+            if (sidebar) {
+                sidebar.classList.remove('open');
+            }
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCU Credit Union | Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/customer.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                <img src="images/logo.png" alt="DCU">
+            </div>
+
+            <ul>
+                <li class="active"><a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li><a href="customer-withdraw.html"><i class="fa-solid fa-money-bill-wave"></i> Withdraw</a></li>
+                <li><a href="customer-transfer.html"><i class="fa-solid fa-arrow-right-arrow-left"></i> Transfer</a></li>
+                <li><a href="#"><i class="fa-solid fa-credit-card"></i> Cards</a></li>
+                <li><a href="#"><i class="fa-solid fa-building"></i> Loans</a></li>
+                <li><a href="#"><i class="fa-solid fa-chart-line"></i> Investments</a></li>
+                <li><a href="customer-profile.html"><i class="fa-solid fa-user"></i> Profile</a></li>
+                <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+
+        </aside>
+
+        <!-- ================= MAIN ================= -->
+        <main class="main">
+
+            <header>
+
+                <!-- Hamburger menu button (mobile) -->
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search transactions...">
+                </div>
+
+                <div class="header-right">
+
+                    <div class="profile-card">
+                        <div class="avatar" id="avatarInitials">TC</div>
+                        <div>
+                            <h4 id="customerName">Test Customer</h4>
+                            <small id="lastLogin">Last login: Just now</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+            <section class="welcome">
+                <div>
+                    <h1 id="welcomeMessage">Good evening, Test Customer! 🎉</h1>
+                    <p>Here's what's happening with your accounts today.</p>
+                </div>
+                <button onclick="window.location.href='customer-transfer.html'">
+                    <i class="fa-solid fa-right-left"></i>
+                    Transfer Money
+                </button>
+            </section>
+
+            <!-- ================= CARDS ================= -->
+            <section class="cards">
+                <div class="card checking">
+                    <h3>Checking</h3>
+                    <small id="checkingAccount">****0309</small>
+                    <h2 id="checkingBalance">$0.00</h2>
+                    <p>Available Balance</p>
+                </div>
+
+                <div class="card">
+                    <h3>Savings</h3>
+                    <small id="savingsAccount">****0309</small>
+                    <h2 id="savingsBalance">$0.00</h2>
+                    <p>Available Balance</p>
+                </div>
+
+                <div class="card">
+                    <h3>Visa Platinum</h3>
+                    <small>****1029</small>
+                    <h2>$2,250.00</h2>
+                    <p>Current Balance</p>
+                </div>
+
+                <div class="card">
+                    <h3>Total Balance</h3>
+                    <h2 id="totalBalance">$0.00</h2>
+                    <p>Across all accounts</p>
+                </div>
+            </section>
+
+            <!-- ================= CONTENT ================= -->
+            <div class="content-grid">
+
+                <div class="transactions">
+                    <div class="section-header">
+                        <h2>Recent Transactions</h2>
+                        <a href="#">View All</a>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTable">
+                            <tr>
+                                <td colspan="5" style="text-align:center; padding:20px; color:#999;">Loading transactions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="table-footer">
+                        <a href="#">View All Transactions</a>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDEBAR -->
+                <div class="right-panel">
+
+                    <div class="widget">
+                        <h3>Financial Health</h3>
+                        <div class="score">92</div>
+                        <h4>Excellent</h4>
+                        <p>Keep it up! You're in great financial shape.</p>
+                    </div>
+
+                    <div class="widget">
+                        <h3>Spending This Month</h3>
+                        <h2>$1,387.25</h2>
+                        <p>12% lower than last month</p>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+
+                    <div class="widget">
+                        <h3>Upcoming Payments</h3>
+                        <ul>
+                            <li>AT&T Mobility <span>$86.00</span></li>
+                            <li>Xfinity Internet <span>$112.45</span></li>
+                            <li>Electric Bill <span>$146.80</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="widget">
+                        <h3>Notifications</h3>
+                        <ul class="notifications" id="notificationsList">
+                            <li>Your transfer request is awaiting approval.</li>
+                            <li>Your eStatement is now available.</li>
+                            <li>Security Alert: New login detected.</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <section class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="action-grid">
+                    <div class="action" onclick="window.location.href='customer-transfer.html'">
+                        <i class="fa-solid fa-right-left"></i>
+                        <span>Transfer</span>
+                    </div>
+                    <div class="action" onclick="window.location.href='customer-withdraw.html'">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        <span>Withdraw</span>
+                    </div>
+                    <div class="action">
+                        <i class="fa-solid fa-wallet"></i>
+                        <span>Deposit</span>
+                    </div>
+                    <div class="action">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>Pay Bills</span>
+                    </div>
+                    <div class="action">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <span>Statements</span>
+                    </div>
+                    <div class="action">
+                        <i class="fa-solid fa-bell"></i>
+                        <span>Alerts</span>
+                    </div>
+                    <div class="action">
+                        <i class="fa-regular fa-credit-card"></i>
+                        <span>Cards</span>
+                    </div>
+                    <div class="action">
+                        <i class="fa-solid fa-ellipsis"></i>
+                        <span>More</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= FOOTER ================= -->
+            <footer class="dashboard-footer">
+                <p>© 2026 DCU Credit Union • Banking System</p>
+                <p>Secure • Encrypted • Federally Insured by NCUA</p>
+            </footer>
+
+        </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+
+    <script>
+        // ========================================
+        // MOBILE SIDEBAR TOGGLE
+        // ========================================
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // Close sidebar when clicking outside (mobile only)
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const toggle = document.querySelector('.menu-toggle');
+            if (window.innerWidth <= 768) {
+                if (sidebar && toggle) {
+                    if (!sidebar.contains(event.target) && !toggle.contains(event.target)) {
+                        sidebar.classList.remove('open');
+                    }
+                }
+            }
+        });
+
+        // Close sidebar when resizing to desktop
+        window.addEventListener('resize', function() {
+            const sidebar = document.querySelector('.sidebar');
+            if (window.innerWidth > 768) {
+                if (sidebar) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
