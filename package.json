@@ -1,7 +1,7 @@
 {
-    "name": "unity-credit-union",
+    "name": "dcu-credit-union",
     "version": "1.0.0",
-    "description": "Unity Credit Union Banking System",
+    "description": "DCU Credit Union Banking System",
     "main": "app.js",
     "scripts": {
         "start": "node app.js",
