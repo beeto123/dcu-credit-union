@@ -67,6 +67,7 @@ module.exports = app;
 
 // Keep the listen for local development
 if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
         console.log(`🚀 Unity Credit Union running on http://localhost:${PORT}`);
     });
