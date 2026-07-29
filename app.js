@@ -62,6 +62,37 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
+// Test Supabase connection
+app.get("/test-supabase", async (req, res) => {
+    try {
+        const supabase = require("./config/supabase");
+        const { data, error } = await supabase
+            .from("users")
+            .select("count")
+            .limit(1);
+        
+        if (error) {
+            return res.json({
+                success: false,
+                error: error.message,
+                details: error
+            });
+        }
+        
+        res.json({
+            success: true,
+            message: "Supabase connected successfully!",
+            data: data
+        });
+    } catch (err) {
+        res.json({
+            success: false,
+            error: err.message,
+            stack: err.stack
+        });
+    }
+});
+
 // Export for Vercel
 module.exports = app;
 
