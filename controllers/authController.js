@@ -43,10 +43,11 @@ exports.login = async (req, res) => {
             });
         }
 
-        // Set session
+        // Set session - using the exact same structure for all users
         req.session.user = {
             id: user.id,
             fullName: user.full_name,
+            email: user.email,
             role: user.role
         };
 
@@ -62,6 +63,7 @@ exports.login = async (req, res) => {
 
             console.log("✅ LOGIN SUCCESSFUL for:", email);
             console.log("Session user:", req.session.user);
+            console.log("Session ID:", req.sessionID);
 
             return res.json({
                 success: true,
@@ -90,6 +92,9 @@ exports.logout = (req, res) => {
 // Get session (check if logged in)
 exports.getSession = async (req, res) => {
     try {
+        console.log("Session check - Session ID:", req.sessionID);
+        console.log("Session user:", req.session.user);
+
         if (!req.session.user) {
             return res.json({
                 loggedIn: false,
