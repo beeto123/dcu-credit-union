@@ -8,6 +8,9 @@ require("dotenv").config();
 
 const app = express();
 
+// Trust Vercel's reverse proxy
+app.set("trust proxy", 1);
+
 // ================= Routes =================
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
