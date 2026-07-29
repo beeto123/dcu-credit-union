@@ -10,7 +10,6 @@ async function loadDashboard() {
         if (!data.success) {
             console.error("Dashboard error:", data.message);
             document.getElementById("welcomeMessage").textContent = "⚠️ Unable to load dashboard. Please refresh.";
-            document.getElementById("customerName").textContent = "Error loading profile";
             return;
         }
 
@@ -31,17 +30,18 @@ async function loadDashboard() {
 
         document.getElementById("customerName").textContent = user.fullname || 'Customer';
 
-        // Update balances with comma formatting
-        const checking = Number(user.checking_balance) || 0;
-        const savings = Number(user.savings_balance) || 0;
-        const total = checking + savings;
-
+        // Format money
         const formatMoney = (amount) => {
-            return amount.toLocaleString('en-US', {
+            return Number(amount).toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
         };
+
+        // Update balances - these IDs exist in your HTML
+        const checking = Number(user.checking_balance) || 0;
+        const savings = Number(user.savings_balance) || 0;
+        const total = checking + savings;
 
         document.getElementById("checkingBalance").textContent = `$${formatMoney(checking)}`;
         document.getElementById("savingsBalance").textContent = `$${formatMoney(savings)}`;
@@ -66,7 +66,6 @@ async function loadDashboard() {
     } catch (error) {
         console.error("Error loading dashboard:", error);
         document.getElementById("welcomeMessage").textContent = "⚠️ Error loading dashboard. Please refresh.";
-        document.getElementById("customerName").textContent = "Error loading profile";
     }
 }
 
@@ -86,6 +85,7 @@ function loadTransactions(transactions) {
 
     tableBody.innerHTML = "";
 
+    // Show last 10 transactions
     const recentTransactions = transactions.slice(0, 10);
 
     recentTransactions.forEach(transaction => {
@@ -95,16 +95,16 @@ function loadTransactions(transactions) {
         const isFailed = transaction.status === 'failed' || transaction.status === 'rejected';
         const isPending = transaction.status === 'pending';
         
-        let amountColor = isCredit ? 'amount-positive' : 'amount-negative';
+        let amountColor = isCredit ? '#1b8f4a' : '#d62828';
         let amountSymbol = isCredit ? '+' : '-';
-        let statusClass = 'status-completed';
+        let statusColor = '#1b8f4a';
         let statusText = (transaction.status || 'completed').toUpperCase();
 
         if (isFailed) {
-            statusClass = 'status-rejected';
+            statusColor = '#d62828';
             statusText = 'REJECTED';
         } else if (isPending) {
-            statusClass = 'status-pending';
+            statusColor = '#f59e0b';
             statusText = 'PENDING';
         }
 
@@ -115,6 +115,7 @@ function loadTransactions(transactions) {
             });
         };
 
+        // Category tag
         const categoryMap = {
             'deposit': 'deposit',
             'withdrawal': 'withdrawal',
@@ -128,17 +129,17 @@ function loadTransactions(transactions) {
             <td>${new Date(transaction.created_at).toLocaleDateString()}</td>
             <td>${transaction.description || transaction.type || '---'}</td>
             <td><span class="tag ${categoryClass}">${categoryLabel}</span></td>
-            <td class="${amountColor}">
+            <td style="color:${amountColor}; font-weight:bold;">
                 ${amountSymbol}$${formatAmount(transaction.amount)}
             </td>
-            <td class="${statusClass}">${statusText}</td>
+            <td style="color:${statusColor}; font-weight:bold;">${statusText}</td>
         `;
         tableBody.appendChild(row);
     });
 }
 
 function loadWithdrawals(withdrawals) {
-    const notificationsContainer = document.querySelector(".notifications");
+    const notificationsContainer = document.getElementById("notificationsList");
     if (!notificationsContainer) return;
 
     const pendingWithdrawals = withdrawals.filter(w => w.status === 'pending');
