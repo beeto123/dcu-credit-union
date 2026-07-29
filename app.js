@@ -17,19 +17,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.NODE_ENV === "production" 
+        ? ["https://dcu-credit-union.vercel.app", "https://dcu-credit-union-lkvqoe45e-olowoeggboygmailcoms-projects.vercel.app"]
+        : true,
+    credentials: true
+}));
 
+// ================= Session Configuration (FIXED) =================
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || "unity-credit-union-secret-key-2024",
+        secret: process.env.SESSION_SECRET || "dcu-credit-union-secret-key-2024",
         resave: false,
-        saveUninitialized: false,
+        saveUninitialized: true,  // Changed to true
         cookie: {
             secure: process.env.NODE_ENV === "production",
-            maxAge: 1000 * 60 * 60,
+            maxAge: 1000 * 60 * 60 * 24, // 24 hours (was 1 hour)
             httpOnly: true,
-            sameSite: "lax"
-        }
+            sameSite: "lax",
+            domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined
+        },
+        name: "dcu.session",
+        rolling: true // Refresh session on each request
     })
 );
 
@@ -58,11 +67,7 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/login.html");
 });
 
-// ================= Server =================
-
-const PORT = process.env.PORT || 3000;
-
-// Test Supabase connection
+// ================= Test Supabase Connection =================
 app.get("/test-supabase", async (req, res) => {
     try {
         const supabase = require("./config/supabase");
@@ -93,10 +98,10 @@ app.get("/test-supabase", async (req, res) => {
     }
 });
 
-// Export for Vercel
+// ================= Export for Vercel =================
 module.exports = app;
 
-// Keep the listen for local development
+// ================= Keep the listen for local development =================
 if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
