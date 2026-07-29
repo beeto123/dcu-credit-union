@@ -43,18 +43,18 @@ exports.login = async (req, res) => {
             });
         }
 
-        // Store session data
+        // Set session
         req.session.user = {
             id: user.id,
             fullName: user.full_name,
-            role: user.role,
-            email: user.email
+            email: user.email,
+            role: user.role
         };
 
-        console.log("Session set for user:", req.session.user);
+        console.log("Session set:", req.session.user);
         console.log("Session ID:", req.sessionID);
 
-        // Save session explicitly
+        // Save session
         req.session.save((err) => {
             if (err) {
                 console.error("Session save error:", err);
@@ -65,7 +65,8 @@ exports.login = async (req, res) => {
             }
 
             console.log("✅ LOGIN SUCCESSFUL for:", email);
-            console.log("Session ID after save:", req.sessionID);
+            console.log("✅ Session ID after save:", req.sessionID);
+            console.log("✅ Session user after save:", req.session.user);
 
             return res.json({
                 success: true,
@@ -94,8 +95,8 @@ exports.logout = (req, res) => {
 // Get session (check if logged in)
 exports.getSession = async (req, res) => {
     try {
-        console.log("Session check - Session ID:", req.sessionID);
-        console.log("Session user:", req.session.user);
+        console.log("📡 Session check - Session ID:", req.sessionID);
+        console.log("📡 Session user:", req.session.user);
 
         if (!req.session.user || !req.session.user.id) {
             return res.json({

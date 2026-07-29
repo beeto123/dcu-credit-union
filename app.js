@@ -34,13 +34,21 @@ app.use(
             secure: process.env.NODE_ENV === "production",
             maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
             httpOnly: true,
-            sameSite: "none",
+            sameSite: "lax", // Changed to 'lax' for better compatibility
             domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined
         },
-        name: "dcu.session",
+        name: "dcu.sid", // Changed to a simpler name
         rolling: true
     })
 );
+
+// ================= Session Debug Middleware =================
+app.use((req, res, next) => {
+    console.log("🔍 Session Debug - Path:", req.path);
+    console.log("🔍 Session ID:", req.sessionID);
+    console.log("🔍 Session User:", req.session.user);
+    next();
+});
 
 // Static Files
 app.use(express.static("public"));
