@@ -34,7 +34,7 @@ app.use(
             secure: process.env.NODE_ENV === "production",
             maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
             httpOnly: true,
-            sameSite: "lax",
+            sameSite: "none", // Changed to 'none' for cross-site
             domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined
         },
         name: "dcu.session",

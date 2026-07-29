@@ -43,18 +43,16 @@ exports.login = async (req, res) => {
             });
         }
 
-        // Store ONLY what's needed in session - keep it simple
-        const sessionData = {
+        // Store session data
+        req.session.user = {
             id: user.id,
             fullName: user.full_name,
             role: user.role,
             email: user.email
         };
 
-        // Set session
-        req.session.user = sessionData;
-
-        console.log("Session data to save:", sessionData);
+        console.log("Session set for user:", req.session.user);
+        console.log("Session ID:", req.sessionID);
 
         // Save session explicitly
         req.session.save((err) => {
@@ -67,12 +65,13 @@ exports.login = async (req, res) => {
             }
 
             console.log("✅ LOGIN SUCCESSFUL for:", email);
-            console.log("Session ID:", req.sessionID);
-            console.log("Session user after save:", req.session.user);
+            console.log("Session ID after save:", req.sessionID);
 
+            // Send cookie info in response for debugging
             return res.json({
                 success: true,
-                role: user.role
+                role: user.role,
+                sessionId: req.sessionID // Temporary for debugging
             });
         });
 
