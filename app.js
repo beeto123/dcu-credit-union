@@ -2,8 +2,6 @@ const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const pgSession = require("connect-pg-simple")(session);
-const { Pool } = require("pg");
 require("dotenv").config();
 
 const app = express();
@@ -26,27 +24,12 @@ app.use(cors({
     credentials: true
 }));
 
-// ================= Session Store in Supabase =================
-
-// Create PostgreSQL connection pool using Supabase connection string
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
-
-// Session configuration with database store
+// ================= Session Configuration =================
 app.use(
     session({
-        store: new pgSession({
-            pool: pool,
-            tableName: "session",
-            pruneSessionInterval: 60
-        }),
         secret: process.env.SESSION_SECRET || "dcu-credit-union-secret-key-2024",
         resave: false,
-        saveUninitialized: false,
+        saveUninitialized: true,
         cookie: {
             secure: process.env.NODE_ENV === "production",
             maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
@@ -54,7 +37,8 @@ app.use(
             sameSite: "lax",
             domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined
         },
-        name: "dcu.session"
+        name: "dcu.session",
+        rolling: true
     })
 );
 
