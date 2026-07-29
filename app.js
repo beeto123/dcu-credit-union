@@ -28,11 +28,24 @@ app.use(cors({
 
 // ================= Session Store in Supabase =================
 
-// Create PostgreSQL connection pool using Supabase
+// Create PostgreSQL connection pool using Supabase connection pooler
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL || "postgresql://postgres:ulp27zEPkpF2qTq6@db.orokpejzphimudspsfew.supabase.co:5432/postgres",
     ssl: {
         rejectUnauthorized: false
+    },
+    max: 1, // Vercel serverless limit
+    idleTimeoutMillis: 10000,
+    connectionTimeoutMillis: 5000
+});
+
+// Test the connection
+pool.connect((err, client, release) => {
+    if (err) {
+        console.error("❌ Database connection error:", err.message);
+    } else {
+        console.log("✅ Database connected successfully");
+        release();
     }
 });
 
@@ -49,7 +62,7 @@ app.use(
         saveUninitialized: true,
         cookie: {
             secure: process.env.NODE_ENV === "production",
-            maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+            maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
             sameSite: "lax",
             domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined
