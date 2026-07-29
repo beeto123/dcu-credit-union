@@ -179,6 +179,15 @@ app.get("/test-supabase", async (req, res) => {
 
 });
 
+app.get("/debug-session", (req, res) => {
+    res.json({
+        sessionID: req.sessionID,
+        session: req.session,
+        cookie: req.headers.cookie || null,
+        user: req.session.user || null
+    });
+});
+
 // ================= Export for Vercel =================
 
 module.exports = app;
