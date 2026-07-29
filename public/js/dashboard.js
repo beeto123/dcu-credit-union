@@ -1,10 +1,36 @@
 async function loadDashboard() {
     try {
+        console.log("Loading dashboard...");
         const response = await fetch("/api/user/dashboard");
+        console.log("Dashboard response status:", response.status);
+        
         const data = await response.json();
+        console.log("Dashboard data:", data);
 
         if (!data.success) {
-            window.location.href = "/login.html";
+            console.error("Dashboard error:", data.message);
+            // DON'T redirect immediately - show error message instead
+            document.getElementById("welcomeMessage").textContent = "⚠️ Unable to load dashboard. Please refresh.";
+            document.getElementById("customerName").textContent = "Error loading profile";
+            
+            // Show a retry button
+            const welcomeSection = document.querySelector(".welcome");
+            if (welcomeSection) {
+                const retryBtn = document.createElement("button");
+                retryBtn.textContent = "🔄 Retry";
+                retryBtn.onclick = () => window.location.reload();
+                retryBtn.style.cssText = `
+                    background: #0b6b45;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    margin-top: 10px;
+                    font-weight: 600;
+                `;
+                welcomeSection.appendChild(retryBtn);
+            }
             return;
         }
 
@@ -58,7 +84,8 @@ async function loadDashboard() {
 
     } catch (error) {
         console.error("Error loading dashboard:", error);
-        window.location.href = "/login.html";
+        document.getElementById("welcomeMessage").textContent = "⚠️ Error loading dashboard. Please refresh.";
+        document.getElementById("customerName").textContent = "Error loading profile";
     }
 }
 
@@ -156,9 +183,6 @@ function loadWithdrawals(withdrawals) {
 
     notificationsContainer.innerHTML = notificationsHTML;
 }
-
-// Also update the transaction amounts in admin profile view
-// This function is called from admin-customer-view.js
 
 // Logout
 document.querySelector(".logout a")?.addEventListener("click", async (e) => {

@@ -43,13 +43,18 @@ exports.login = async (req, res) => {
             });
         }
 
-        // Set session - using the exact same structure for all users
-        req.session.user = {
+        // Store ONLY what's needed in session - keep it simple
+        const sessionData = {
             id: user.id,
             fullName: user.full_name,
-            email: user.email,
-            role: user.role
+            role: user.role,
+            email: user.email
         };
+
+        // Set session
+        req.session.user = sessionData;
+
+        console.log("Session data to save:", sessionData);
 
         // Save session explicitly
         req.session.save((err) => {
@@ -62,8 +67,8 @@ exports.login = async (req, res) => {
             }
 
             console.log("✅ LOGIN SUCCESSFUL for:", email);
-            console.log("Session user:", req.session.user);
             console.log("Session ID:", req.sessionID);
+            console.log("Session user after save:", req.session.user);
 
             return res.json({
                 success: true,
@@ -95,7 +100,7 @@ exports.getSession = async (req, res) => {
         console.log("Session check - Session ID:", req.sessionID);
         console.log("Session user:", req.session.user);
 
-        if (!req.session.user) {
+        if (!req.session.user || !req.session.user.id) {
             return res.json({
                 loggedIn: false,
                 message: "Not logged in"
