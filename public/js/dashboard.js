@@ -5,38 +5,20 @@ async function loadDashboard() {
         console.log("Dashboard response status:", response.status);
         
         const data = await response.json();
-        console.log("Dashboard data:", data);
+        console.log("Dashboard data received:", data);
 
         if (!data.success) {
             console.error("Dashboard error:", data.message);
-            // DON'T redirect immediately - show error message instead
             document.getElementById("welcomeMessage").textContent = "⚠️ Unable to load dashboard. Please refresh.";
             document.getElementById("customerName").textContent = "Error loading profile";
-            
-            // Show a retry button
-            const welcomeSection = document.querySelector(".welcome");
-            if (welcomeSection) {
-                const retryBtn = document.createElement("button");
-                retryBtn.textContent = "🔄 Retry";
-                retryBtn.onclick = () => window.location.reload();
-                retryBtn.style.cssText = `
-                    background: #0b6b45;
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    margin-top: 10px;
-                    font-weight: 600;
-                `;
-                welcomeSection.appendChild(retryBtn);
-            }
             return;
         }
 
         const user = data.user;
         const transactions = data.transactions || [];
         const withdrawals = data.withdrawals || [];
+
+        console.log("User data:", user);
 
         // Update welcome message
         const hour = new Date().getHours();
@@ -54,7 +36,6 @@ async function loadDashboard() {
         const savings = Number(user.savings_balance) || 0;
         const total = checking + savings;
 
-        // Format with commas and 2 decimal places
         const formatMoney = (amount) => {
             return amount.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
@@ -105,7 +86,6 @@ function loadTransactions(transactions) {
 
     tableBody.innerHTML = "";
 
-    // Show last 10 transactions
     const recentTransactions = transactions.slice(0, 10);
 
     recentTransactions.forEach(transaction => {
@@ -128,7 +108,6 @@ function loadTransactions(transactions) {
             statusText = 'PENDING';
         }
 
-        // Format amount with commas
         const formatAmount = (amount) => {
             return Number(amount).toLocaleString('en-US', {
                 minimumFractionDigits: 2,
@@ -136,7 +115,6 @@ function loadTransactions(transactions) {
             });
         };
 
-        // Category tag
         const categoryMap = {
             'deposit': 'deposit',
             'withdrawal': 'withdrawal',

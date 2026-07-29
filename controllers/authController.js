@@ -67,11 +67,9 @@ exports.login = async (req, res) => {
             console.log("✅ LOGIN SUCCESSFUL for:", email);
             console.log("Session ID after save:", req.sessionID);
 
-            // Send cookie info in response for debugging
             return res.json({
                 success: true,
-                role: user.role,
-                sessionId: req.sessionID // Temporary for debugging
+                role: user.role
             });
         });
 
