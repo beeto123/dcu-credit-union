@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const app = express();
 
-// Routes
+// ================= Routes =================
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
@@ -20,80 +20,114 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(cors({
-    origin: process.env.NODE_ENV === "production" 
-        ? ["https://dcu-credit-union.vercel.app", "https://dcu-credit-union-lkvqoe45e-olowoeggboygmailcoms-projects.vercel.app"]
+    origin: process.env.NODE_ENV === "production"
+        ? [
+            "https://dcu-credit-union.vercel.app",
+            "https://dcu-credit-union-lkvqoe45e-olowoeggboygmailcoms-projects.vercel.app"
+        ]
         : true,
     credentials: true
 }));
 
-// ================= Session Store in Supabase =================
+// ================= PostgreSQL Session Store =================
 
-// Create PostgreSQL connection pool using Supabase connection pooler
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL || "postgresql://postgres:ulp27zEPkpF2qTq6@db.orokpejzphimudspsfew.supabase.co:5432/postgres",
+    connectionString: process.env.DATABASE_URL ||
+        "postgresql://postgres:ulp27zEPkpF2qTq6@db.orokpejzphimudspsfew.supabase.co:5432/postgres",
+
     ssl: {
         rejectUnauthorized: false
     },
-    max: 1, // Vercel serverless limit
+
+    max: 1,
     idleTimeoutMillis: 10000,
     connectionTimeoutMillis: 5000
 });
 
-// Test the connection
+// Test DB Connection
 pool.connect((err, client, release) => {
+
     if (err) {
-        console.error("❌ Database connection error:", err.message);
+
+        console.error("❌ Database connection failed:");
+        console.error(err.message);
+
     } else {
-        console.log("✅ Database connected successfully");
+
+        console.log("✅ PostgreSQL connected successfully");
         release();
+
     }
+
 });
 
-// Session configuration with database store
+// ================= Session =================
+
 app.use(
     session({
+
         store: new pgSession({
             pool: pool,
             tableName: "session",
             pruneSessionInterval: 60
         }),
-        secret: process.env.SESSION_SECRET || "dcu-credit-union-secret-key-2024",
+
+        secret: process.env.SESSION_SECRET,
+
         resave: false,
-        saveUninitialized: true,
-        cookie: {
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 1000 * 60 * 60 * 24 * 7,
-            httpOnly: true,
-            sameSite: "lax",
-            domain: process.env.NODE_ENV === "production" ? ".vercel.app" : undefined
-        },
+
+        saveUninitialized: false,
+
         name: "dcu.sid",
-        rolling: true
+
+        cookie: {
+
+            secure: process.env.NODE_ENV === "production",
+
+            httpOnly: true,
+
+            sameSite: "lax",
+
+            maxAge: 1000 * 60 * 60 * 24 * 7
+
+        }
+
     })
 );
 
-// ================= Session Debug Middleware =================
+// ================= Debug Session =================
+
 app.use((req, res, next) => {
-    console.log("🔍 Session Debug - Path:", req.path);
-    console.log("🔍 Session ID:", req.sessionID);
-    console.log("🔍 Session User:", req.session.user);
+
+    console.log("====================================");
+    console.log("Request:", req.method, req.path);
+    console.log("Session ID:", req.sessionID);
+    console.log("Session User:", req.session.user);
+    console.log("====================================");
+
     next();
+
 });
 
-// Static Files
+// ================= Static Files =================
+
 app.use(express.static("public"));
 
 // Remove trailing slash
+
 app.use((req, res, next) => {
-    if (req.path.length > 1 && req.path.endsWith('/')) {
-        const newPath = req.path.slice(0, -1);
-        res.redirect(301, newPath);
-    } else {
-        next();
+
+    if (req.path.length > 1 && req.path.endsWith("/")) {
+
+        return res.redirect(301, req.path.slice(0, -1));
+
     }
+
+    next();
+
 });
 
-// ================= Routes =================
+// ================= API Routes =================
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
@@ -102,47 +136,63 @@ app.use("/api/admin", adminRoutes);
 // ================= Pages =================
 
 app.get("/", (req, res) => {
+
     res.sendFile(__dirname + "/public/login.html");
+
 });
 
-// ================= Test Supabase Connection =================
+// ================= Test Supabase =================
+
 app.get("/test-supabase", async (req, res) => {
+
     try {
+
         const supabase = require("./config/supabase");
+
         const { data, error } = await supabase
             .from("users")
-            .select("count")
+            .select("*")
             .limit(1);
-        
+
         if (error) {
+
             return res.json({
                 success: false,
-                error: error.message,
-                details: error
+                error
             });
+
         }
-        
+
         res.json({
             success: true,
-            message: "Supabase connected successfully!",
-            data: data
+            data
         });
+
     } catch (err) {
+
         res.json({
             success: false,
-            error: err.message,
-            stack: err.stack
+            message: err.message
         });
+
     }
+
 });
 
 // ================= Export for Vercel =================
+
 module.exports = app;
 
-// ================= Keep the listen for local development =================
-if (process.env.NODE_ENV !== 'production') {
+// ================= Local Development =================
+
+if (process.env.NODE_ENV !== "production") {
+
     const PORT = process.env.PORT || 3000;
+
     app.listen(PORT, () => {
+
         console.log(`🚀 Unity Credit Union running on http://localhost:${PORT}`);
+
     });
+
 }
