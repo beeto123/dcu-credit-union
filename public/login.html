@@ -2,385 +2,264 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Union</title>
 
-<meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-<title>Credit Union | Digital Banking</title>
+        body {
+            background: #f4f7fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
+        .login-wrapper {
+            width: 100%;
+            max-width: 440px;
+            background: white;
+            border-radius: 24px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        .login-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0b6b45;
+            letter-spacing: -0.5px;
+        }
 
-<link rel="stylesheet" href="css/login.css">
+        .login-header p {
+            color: #888;
+            font-size: 15px;
+            margin-top: 6px;
+            font-weight: 400;
+        }
 
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: .3s;
+            background: #fafafa;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #0b6b45;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(11, 107, 69, 0.08);
+        }
+
+        .options-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 16px 0 24px 0;
+            font-size: 14px;
+        }
+
+        .options-row .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .options-row .remember input {
+            width: 16px;
+            height: 16px;
+            accent-color: #0b6b45;
+            cursor: pointer;
+        }
+
+        .options-row a {
+            color: #0b6b45;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .options-row a:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: #0b6b45;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .login-btn:hover {
+            background: #095a3a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(11, 107, 69, 0.25);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .login-footer p {
+            font-size: 13px;
+            color: #999;
+            line-height: 1.6;
+        }
+
+        .login-footer a {
+            color: #0b6b45;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .login-wrapper {
+                padding: 30px 20px;
+                border-radius: 18px;
+            }
+
+            .login-header h1 {
+                font-size: 24px;
+            }
+
+            .login-header p {
+                font-size: 14px;
+            }
+
+            .form-group input {
+                padding: 12px 14px;
+                font-size: 14px;
+            }
+
+            .options-row {
+                font-size: 13px;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .login-btn {
+                padding: 14px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .login-wrapper {
+                padding: 20px 16px;
+            }
+
+            .login-header h1 {
+                font-size: 20px;
+            }
+
+            .options-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<header class="top-header">
-
-<div class="container">
-
-<div class="logo">
-
-<img src="images/logo.png">
-
-</div>
-
-<div class="top-links">
-
-<a href="#">Rates</a>
-
-<a href="#">Locations</a>
-
-<a href="#">Contact</a>
-
-<a href="#">Join</a>
-
-<button class="search">
-
-<i class="fa-solid fa-magnifying-glass"></i>
-
-</button>
-
-</div>
-
-</div>
-
-</header>
-
-<nav>
-
-<div class="container">
-
-<ul>
-
-<li><a href="#">Bank</a></li>
-
-<li><a href="#">Borrow</a></li>
-
-<li><a href="#">Learn</a></li>
-
-<li><a href="#">Plan</a></li>
-
-<li><a href="#">Business</a></li>
-
-<li><a href="#">Wealth</a></li>
-
-<li><a href="#">Insurance</a></li>
-
-<li><a href="#">Membership</a></li>
-
-</ul>
-
-</div>
-
-</nav>
-
-<section class="hero">
-
-<div class="overlay"></div>
-
-<div class="container hero-content">
-
-<div class="hero-left">
-
-<h1>
-
-Digital Banking
-
-<br>
-
-made easy.
-
-</h1>
-
-<p>
-
-Manage your money securely anytime, anywhere.
-
-</p>
-
-<a href="#" class="learn-btn">
-
-Learn More
-
-</a>
-
-</div>
-
-<div class="login-card">
-
-<div class="login-top">
-
-<h2>
-
-Digital Banking
-
-</h2>
-
-<p>
-
-Sign in to continue
-
-</p>
-
-</div>
-
-<form id="loginForm">
-
-<div class="input-group">
-
-<label>Username</label>
-
-<input
-
-type="email"
-
-id="email"
-
-placeholder="Enter email"
-
-required>
-
-</div>
-
-<div class="input-group">
-
-<label>Password</label>
-
-<input
-
-type="password"
-
-id="password"
-
-placeholder="Password"
-
-required>
-
-</div>
-
-<div class="remember">
-
-<label>
-
-<input type="checkbox">
-
-Remember me
-
-</label>
-
-<a href="#">
-
-Forgot Password?
-
-</a>
-
-</div>
-
-<button type="submit">
-
-Sign In
-
-</button>
-
-<div class="register-links">
-
-<a href="#">
-
-Enroll in Online Banking
-
-</a>
-
-<a href="#">
-
-Need Help?
-
-</a>
-
-</div>
-
-</form>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- Hero bottom information section -->
-
-<section class="services">
-
-<div class="container">
-
-<div class="service-box">
-
-<i class="fa-solid fa-building-columns"></i>
-
-<h3>Banking</h3>
-
-<p>
-Checking, savings, cards and everyday money management.
-</p>
-
-<a href="#">
-Explore Banking
-</a>
-
-</div>
-
-
-<div class="service-box">
-
-<i class="fa-solid fa-house"></i>
-
-<h3>Borrowing</h3>
-
-<p>
-Home loans, personal loans and flexible financing options.
-</p>
-
-<a href="#">
-Explore Loans
-</a>
-
-</div>
-
-
-<div class="service-box">
-
-<i class="fa-solid fa-chart-line"></i>
-
-<h3>Investing</h3>
-
-<p>
-Grow your future with smart financial planning.
-</p>
-
-<a href="#">
-Explore Investing
-</a>
-
-</div>
-
-
-<div class="service-box">
-
-<i class="fa-solid fa-user-group"></i>
-
-<h3>Membership</h3>
-
-<p>
-Become part of a trusted credit union community.
-</p>
-
-<a href="#">
-Join 
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<footer>
-
-<div class="container footer-content">
-
-
-<div class="footer-column">
-
-<h3>Credit Union</h3>
-
-<p>
-Digital banking.
-</p>
-
-</div>
-
-
-
-<div class="footer-column">
-
-<h4>Quick Links</h4>
-
-<a href="#">About Us</a>
-
-<a href="#">Contact</a>
-
-<a href="#">Locations</a>
-
-<a href="#">Careers</a>
-
-</div>
-
-
-
-<div class="footer-column">
-
-<h4>Security</h4>
-
-<a href="#">Privacy</a>
-
-<a href="#">Fraud Prevention</a>
-
-<a href="#">Security Center</a>
-
-<a href="#">Accessibility</a>
-
-</div>
-
-
-
-<div class="footer-column">
-
-<h4>Support</h4>
-
-<a href="#">Help Center</a>
-
-<a href="#">Forgot Password</a>
-
-<a href="#">Online Banking Help</a>
-
-</div>
-
-
-</div>
-
-
-<div class="footer-bottom">
-
-<p>
-
-© 2026 Credit Union. All Rights Reserved.
-
-</p>
-
-<p>
-
-Federally insured by NCUA | Equal Housing Opportunity
-
-</p>
-
-</div>
-
-
-</footer>
-
-
-
-<script src="js/login.js"></script>
+    <div class="login-wrapper">
+
+        <div class="login-header">
+            <h1>Digital banking</h1>
+            <p>Sign in into your account</p>
+        </div>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label for="email">Username</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+
+            <div class="options-row">
+                <label class="remember">
+                    <input type="checkbox"> Remember me
+                </label>
+                <a href="#">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">
+                Sign In
+            </button>
+
+        </form>
+
+        <div class="login-footer">
+            <p>
+                DCU Credit Union - Secure Banking Since 1979.<br>
+                Member FDIC. Equal Housing Lender. 
+                Protected by 256-bit SSL encryption.
+            </p>
+            <p style="margin-top:4px; font-size:12px;">
+                <a href="#">Privacy</a> • <a href="#">Terms</a> • 
+                <span style="color:#ccc;"></span>
+            </p>
+        </div>
+
+    </div>
+
+    <script src="js/login.js"></script>
 
 </body>
-
 </html>
